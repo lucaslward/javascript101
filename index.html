@@ -153,6 +153,198 @@ log('testing!')(options.list || []).forEach(function(i) {
                     </section>
                 </section>
 
+                <section>
+                    <section>
+                        <h2>Functions</h2>
+                    </section>
+                    <section>
+                        <h2>Declaration</h2>
+                        <pre class="fragment"><code>
+function foo() {}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Hoisting</h2>
+                        <pre class="fragment"><code>
+foo(); // Works because foo was created before this code runs
+function foo() {}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Assignment</h2>
+                        <pre class="fragment"><code>
+var foo = function() {};
+                        </code></pre>
+                        <pre class="fragment"><code>
+foo; // 'undefined'
+foo(); // this raises a TypeError
+var foo = function() {};
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Objects</h2>
+                        <h4 class="fragment">Everything is one</h4>
+                        <pre class="fragment"><code>
+false.toString(); // 'false'
+[1, 2, 3].toString(); // '1,2,3'
+
+function Foo(){}
+Foo.bar = 1;
+Foo.bar; // 1
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Even numbers</h2>
+                        <pre><code>
+2.toString(); // raises SyntaxError
+
+2..toString(); // the second point is correctly recognized
+2 .toString(); // note the space left to the dot
+(2).toString(); // 2 is evaluated first
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>But everyone uses them like a hash</h2>
+                        <pre><code>
+var foo = {}; // a new empty object
+
+// a new object with a 'test' property with value 12
+var bar = {test: 12};
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>With every hash key access mechanism possible</h2>
+                        <pre><code>
+var foo = {name: 'kitten'}
+foo.name; // kitten
+foo['name']; // kitten
+
+var get = 'name';
+foo[get]; // kitten
+
+foo.1234; // SyntaxError
+foo['1234']; // works
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>But inheritance is different from anything you're used to</h2>
+                        <pre><code class="js">
+function Foo() {
+    this.value = 42;
+}
+Foo.prototype = {
+    method: function() {}
+};
+
+function Bar() {}
+
+// Set Bar's prototype to a new instance of Foo
+Bar.prototype = new Foo();
+Bar.prototype.foo = 'Hello World';
+
+// Make sure to list Bar as the actual constructor
+Bar.prototype.constructor = Bar;
+
+var test = new Bar(); // create a new bar instance
+
+// The resulting prototype chain
+test [instance of Bar]
+    Bar.prototype [instance of Foo]
+        { foo: 'Hello World' }
+        Foo.prototype
+            { method: ... }
+            Object.prototype
+                { toString: ... /* etc. */ }
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>The Funky Stuff</h1>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>'this this' or 'that this'</h2>
+                    </section>
+                    <section>
+                        <h2>By default 'this' is global</h2>
+                        <pre><code>
+execute = function();
+this.execute()
+//is the same as
+execute()
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Unless the function is in an object</h2>
+                        <pre><code>
+value = "foo";
+test = {
+  value: "bar",
+  execute: function() { return this.value }
+};
+test.execute()
+// returns "bar"
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Or other...reasons</h2>
+                        <pre><code>
+value = "foo";
+test = {
+  value: "bar",
+  execute: function() {
+    function test(){
+      return this.value;
+    }
+    return test();
+  }
+};
+test.execute()
+// returns "foo"
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>So people get it around it by explicitely setting it</h2>
+                        <pre><code>
+value = "foo";
+test = {
+  value: "bar",
+  execute: function() {
+    var self = this;
+    function test(){
+      return this.value;
+    }
+    return test();
+  }
+};
+test.execute()
+// returns "bar"
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Or by calling the method differently</h2>
+                        <pre><code>
+value = "foo";
+test = {
+  value: "bar",
+  execute: function() {
+    function test(){
+      return this.value;
+    }
+    return test.call(this);
+  }
+};
+test.execute()
+// returns "bar"
+                        </code></pre>
+                    </section>
+
+                </section>
 		<section>
 		    <h2>Point of View</h2>
 		    <p>
