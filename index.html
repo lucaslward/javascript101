@@ -91,7 +91,7 @@
 		        <h2>The Basic Stuff</h2>
                         <ul>
                             <li>REPL</li>
-                            <li>Global Namespace</li>
+                            <li>Scope</li>
                             <li>ASI</li>
                             <li>Functions</li>
                             <li>prototype inheritance</li>
@@ -102,20 +102,43 @@
                     <section>
                         <h2>The REPL</h2>
                     </section>
+		</section>
+
+                <section>
                     <section>
-                        <h2>The Global Namespace</h2>
+                        <h2>Scope is global by default</h2>
                         <pre><code data-trim>
-// global scope
-var foo = 42;
-function test() {
-  // local scope
-  foo = 21;
+var test = "I'm global";
+function testScope() {
+  test = "I'm local";
+  console.log(test);
 }
-test();
-foo; // 21
+console.log(test);     // output: I'm global
+testScope();           // output: I'm local
+console.log(test);     // output: I'm local (the global variable is reassigned)
                         </code></pre>
                     </section>
-		</section>
+                    <section>
+                        <h2>But Doesn't work the way you would expect</h2>
+                        <pre><code data-trim>
+var test = "I'm global";
+function testScope() {
+  var test = "I'm local";
+  console.log(test);
+}
+console.log(test);     // output: I'm global
+testScope();           // output: I'm local
+console.log(test);     // output: I'm global (the global variable is reassigned)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>It's function scoped, <strong>not</strong> block scoped</h2>
+                        <pre><code data-trim>
+for(var i = 0; i < 7; i++){ var foo = i; }
+foo; //outputs 6
+                        </code></pre>
+                    </section>
+                </section>
                 <section>
                     <section>
                         <h2>Automatic Semicolon Insertion(ASI)</h2>
@@ -376,7 +399,6 @@ false        ===   null          // false
 null         ===   undefined     // false
 " \t\r\n"    ===   0             // false
                         </code></pre>
-                        <h3 class="fragment">is broken</h3>
                     </section>
                     <section>
                         <h2>Programmatically determining types is an even bigger mess</h2>
@@ -414,6 +436,48 @@ _.isNumber('8.4');
                         </code></pre>
                     </section>
                 </section>
+
+                <section>
+                    <section>
+                        <h2>Truthy and falsy</h2>
+                        <p>
+                            A truthy value translates to true when evaluted in a boolean context
+                        </p>
+                    </section>
+                    <section>
+                        <pre><code>
+if(false){ console.log("happened");}
+// nothing is logged
+                        </code></pre>
+                        <pre><code>
+if(new Boolean(false)){ console.log("happened");}
+// console logs "happened"
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>So, what's falsey?</h2>
+                        <ul>
+                            <li>false</li>
+                            <li>0</li>
+                            <li>""</li>
+                            <li>null</li>
+                            <li>undefined</li>
+                            <li>NaN</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Everything else is truthy</h2>
+                        <pre><code>
+if(true)
+if({})
+if([])
+if(42)
+if("foo")
+if(new Date())
+                        </code></pre>
+                    </section>
+                </section>
+
                 <section>
                     <section>
                         <h2>Iteration is also kind of broken</h2>
@@ -442,6 +506,8 @@ _.forEach({ 'a': 1, 'b': 2 }, function(n, key) {
                         </code></pre>
                     </section>
                 </section>
+
+
                 <section>
                     <h2>The (kind of) Advanced Stuff</h2>
                 </section>
@@ -477,6 +543,7 @@ foo; // 21
   foo; // 21
 })();
                         </code></pre>
+                        <p>This is called an immeadiately invoked function expression (also known as IIFE)</p>
                     </section>
                     <section>
                         <h2>Or using something like Browserify</h2>
@@ -491,6 +558,42 @@ module.exports = function(){
   test();
   foo; // 21
 };
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Common Utilities</h2>
+                    <ul>
+                        <li>underscore</li>
+                        <li>lodash</li>
+                        <li>jQuery</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Testing</h2>
+                    </section>
+                    <section>
+                        <h2>Jasmine</h2>
+                        <pre><code>
+describe("A suite", function() {
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <p>Our tests are currently available in /spec/javascripts/</p>
+                        <p>You can run thme by executing the following:</p>
+                        <pre><code>
+rake teaspoon
+                        </code></pre>
+                        <p>Or by visiting:</p>
+                        <pre><code>
+http://localhost:3000/teaspoon
                         </code></pre>
                     </section>
                 </section>
