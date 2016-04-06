@@ -30,7 +30,7 @@
 	</script>
 
 	<!--[if lt IE 9]>
-	<script src="lib/js/html5shiv.js"></script>
+	    <script src="lib/js/html5shiv.js"></script>
 	<![endif]-->
     </head>
 
@@ -41,10 +41,7 @@
 	    <!-- Any section element inside of this container is displayed as a slide -->
 	    <div class="slides">
 		<section>
-		    <h1>JavaScript 101</h1>
-		    <p>
-			<small>Lucas Ward</small>
-		    </p>
+                    <img src="http://cf.chucklesnetwork.com/items/1/1/4/5/2/9/original/javascript-please-just-work.jpg" />
 		</section>
 
 		<section>
@@ -55,6 +52,7 @@
 			    <li>The Basic Stuff</li>
 			    <li>The Funky Stuff</li>
 			    <li>The Advanced (kind of) Stuff</li>
+			    <li>The Future of Javascript</li>
 		        </ol>
 		    </p>
 		</section>
@@ -81,6 +79,7 @@
                             <li>2008: ES4 RIP, Harmony founded in July</li>
                             <li>2009: ES5: “use strict”, JSON, Object.create, etc.</li>
                             <li>2012: ES6 under way: modules, let, proxies, etc.</li>
+                            <li>2015: ES6 finalized</li>
                         </ul>
                     </section>
 
@@ -598,6 +597,294 @@ http://localhost:3000/teaspoon
                     </section>
                 </section>
 
+                <section>
+                    <section>
+                        <h2>ES6</h2>
+                    </section>
+                    <section>
+                        <h2>
+                            Introduction
+                        </h2>
+                        <ul>
+                            <li>Also known as harmony, es-next, ES2015 is the latest official name</li>
+                            <li>Future versions of the specification will follow the ES[YYYY] pattern, e.g ES2016 for ES7</li>
+                            <li>Yearly release schedule</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>You should consider ES variants to be a new language that is 'compiled' down
+                            to support older versions, just like coffeescript, etc
+                        </h3>
+                        <br />
+                        <h4>* JS will now be making breaking changes between releases</h4>
+                    </section>
+                    <section>
+                        <h2>Tooling</h2>
+                        <ul>
+                            <li>New approach is to use a 'transpiler'</li>
+                            <li>Transpilers convert from latest JS to older version</li>
+                            <li>Right now, most people use babel for this</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Fixing things that are broken</h2>
+                    </section>
+                    <section>
+                        <h2>let</h2>
+                        <ul>
+                            <li>An alternative to var when declaring variables</li>
+                            <li>Block-scoped instead of lexically scoped to function</li>
+                            <li>Hoisted to top of block, not top of the function</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <pre>
+                            <code>
+let outer = 'I am so eccentric!'
+{
+  let inner = 'I play with neighbors in my block and the sewers'
+  {
+    let innermost = 'I only play with neighbors in my block'
+  }
+  // accessing innermost here would throw
+}
+// accessing inner here would throw
+// accessing innermost here would throw
+                            </code>
+                        </pre>
+                        <pre><code>
+there = 'far away'
+// <- ReferenceError: there is not defined
+let there = 'dragons'
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>const</h2>
+                        <ul>
+                            <li>Works the way you think it would: Can only be assigned to once</li>
+                            <li>Also block scoped</li>
+                            <li>Assigning will fail silently</li>
+                            <li>Redeclaration of a variable will throw</li>
+                            <li>If assigned an object, the objects members can be changed</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Lexical this</h2>
+                        <pre><code>
+this.nums.forEach((v) => {
+    if (v % 5 === 0)
+         this.fives.push(v)
+})
+                        </code></pre>
+                        <h3>rather than</h3>
+                        <pre><code>
+var self = this;
+this.nums.forEach(function (v) {
+    if (v % 5 === 0)
+        self.fives.push(v);
+});
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Syntactic Sugar</h2>
+                    </section>
+                    <section>
+                        <h2>Arrow functions</h2>
+                        <pre><code>
+[1, 2].map(x => x * 2)
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>String interpolation</h2>
+                        <pre><code>
+get`http://example.com/foo?bar=${bar + baz}&quux=${quux}`
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Method Properties</h2>
+                        <pre><code>
+obj = {
+    foo (a, b) { … },
+    bar (x, y) { … },
+    *quux (x, y) { … }
+}
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Stuff that makes JS a real growed up language</h2>
+                    </section>
+                    <section>
+                        <h2>Classes</h2>
+                        <ul>
+                            <li>Just syntactic sugar on top of prototype inheritance</li>
+                            <li>But you can control the prototype chain</li>
+                    </section>
+                    <section>
+                        <pre><code>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+function Car () {
+  this.fuel = 0;
+  this.distance = 0;
+}
+
+Car.prototype.move = function () {
+  if (this.fuel < 1) {
+    throw new RangeError('Fuel tank is depleted')
+  }
+  this.fuel--
+  this.distance += 2
+}
+
+Car.prototype.addFuel = function () {
+  if (this.fuel >= 60) {
+    throw new RangeError('Fuel tank is full')
+  }
+  this.fuel++
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+var car = new Car()
+car.addFuel()
+car.move()
+car.move()
+// <- RangeError: 'Fuel tank is depleted'
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+class Car {
+  constructor () {
+    this.fuel = 0
+    this.distance = 0
+  }
+  move () {
+    if (this.fuel < 1) {
+      throw new RangeError('Fuel tank is depleted')
+    }
+    this.fuel--
+    this.distance += 2
+  }
+  addFuel () {
+    if (this.fuel >= 60) {
+      throw new RangeError('Fuel tank is full')
+    }
+    this.fuel++
+  }
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+function Car () {
+  this.topSpeed = Math.random()
+}
+Car.isFaster = function (left, right) {
+  return left.topSpeed > right.topSpeed
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+class Car {
+  constructor () {
+    this.topSpeed = Math.random()
+  }
+  static isFaster (left, right) {
+    return left.topSpeed > right.topSpeed
+  }
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+class Tesla extends Car {
+  move () {
+    super.move()
+    this.distance += 4
+  }
+}
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre><code>
+class Rectangle {
+    constructor (width, height) { this._width  = width this._height = height }
+    set width (width) { this._width = width }
+    get width () { return this._width }
+    set height (height) { this._height = height }
+    get height () { return this._height }
+    get area () { return this._width * this._height }
+}
+var r = new Rectangle(50, 20)
+r.area === 1000
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Symbols</h2>
+                        <pre><code>
+Symbol("foo") !== Symbol("foo")
+const foo = Symbol()
+const bar = Symbol()
+typeof foo === "symbol"
+typeof bar === "symbol"
+let obj = {} obj[foo] = "foo"
+obj[bar] = "bar"
+JSON.stringify(obj) // {}
+Object.keys(obj) // []
+Object.getOwnPropertyNames(obj) // []
+Object.getOwnPropertySymbols(obj) // [ foo, bar ]
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Metaprogramming</h2>
+                        <pre><code>
+let target = { foo: "Welcome, foo" }
+let proxy = new Proxy(target, {
+    get (receiver, name) {
+        return name in receiver ? receiver[name] : `Hello, ${name}`
+    }
+})
+proxy.foo === "Welcome, foo"
+proxy.world === "Hello, world"
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Modules!</h2>
+                    </section>
+                    <section>
+                        <pre><code>
+//  lib/math.js
+export function sum (x, y) { return x + y }
+export var pi = 3.141593
+
+//  someApp.js
+import * as math from "lib/math"
+console.log("2π = " + math.sum(math.pi, math.pi))
+
+//  otherApp.js
+import { sum, pi } from "lib/math"
+console.log("2π = " + sum(pi, pi))
+                        </code></pre>
+                    </section>
+                </section>
+
 		<section style="text-align: left;">
 		    <h1>THE END</h1>
 		    <p>
@@ -616,7 +903,7 @@ http://localhost:3000/teaspoon
 	<script>
 
 	 // Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
+	 // https://github.com/hakimel/reveal.js#configuration
 	 Reveal.initialize({
 	     controls: true,
 	     progress: true,
